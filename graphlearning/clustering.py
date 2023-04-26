@@ -111,6 +111,7 @@ class clustering:
 
 
 class spectral(clustering):
+    def __init__(self, W, num_clusters, method='NgJordanWeiss', extra_dim=0, accelerated_kmeans=False):
         """Spectral clustering
         ===================
 
