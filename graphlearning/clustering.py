@@ -111,7 +111,6 @@ class clustering:
 
 
 class spectral(clustering):
-    def __init__(self, W, num_clusters, method='NgJordanWeiss', extra_dim=0):
         """Spectral clustering
         ===================
 
@@ -173,6 +172,7 @@ class spectral(clustering):
             
         self.method = method
         self.extra_dim = extra_dim
+        self.accelerated_kmeans = accelerated_kmeans
 
     def _fit(self, all_labels=None):
 
@@ -180,6 +180,8 @@ class spectral(clustering):
         num_clusters = self.num_clusters
         method = self.method
         extra_dim = self.extra_dim
+
+        accelerated = False
 
         if method == 'combinatorial':
             vals, vec = self.graph.eigen_decomp(k=num_clusters+extra_dim)
@@ -190,10 +192,19 @@ class spectral(clustering):
             norms = np.sum(vec*vec,axis=1)
             T = sparse.spdiags(norms**(-1/2),0,n,n)
             vec = T@vec  #Normalize rows
+        elif method == 'NgJordanWeiss-accelerated':
+            vals, vec = self.graph.eigen_decomp(normalization='normalized', k=num_clusters+extra_dim)
+            norms = np.sum(vec*vec,axis=1)
+            T = sparse.spdiags(norms**(-1/2),0,n,n)
+            vec = T@vec  #Normalize rows
+            accelerated = True
         else:
             sys.exit("Invalid spectral clustering method " + method)
 
-        kmeans = cluster.KMeans(n_clusters=num_clusters).fit(vec)
+        if accelerated:
+            kmeans = cluster.KMeans(n_clusters=num_clusters, algorithm="elkan").fit(vec)
+        else:
+            kmeans = cluster.KMeans(n_clusters=num_clusters).fit(vec)
 
         return kmeans.labels_
 
@@ -452,7 +463,7 @@ def RP1D(X,T=100):
     d = X.shape[1]
     v = np.random.rand(T,d)
     wmin = np.inf
-    imin = 0;
+    imin = 0
     for i in range(T):
         x = np.sum(v[i,:]*X,axis=1)
         w,m = withinss(x)

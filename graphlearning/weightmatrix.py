@@ -119,9 +119,12 @@ def knn(data, k, kernel='gaussian', eta=None, symmetrize=True, metric='raw', sim
         if kernel in ['distance','uniform']:
             W = utils.sparse_max(W, W.transpose())
         else:
-            W = (W + W.transpose())/2;
+            W = (W + W.transpose())/2
 
     return W
+
+def fully_connected(data, kernel='gaussian', eta=None, symmetrize=True, metric='raw', similarity='euclidean', knn_data=None):
+    return knn(data, k=data.shape[0], kernel='gaussian', eta=None, symmetrize=True, metric='raw', similarity='euclidean', knn_data=None)
 
 def epsilon_ball(data, epsilon, kernel='gaussian', features=None, epsilon_f=1, eta=None, zero_diagonal=False):
     """Epsilon ball weight matrix
