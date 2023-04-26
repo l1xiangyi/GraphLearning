@@ -1,19 +1,22 @@
-import graphlearning as gl
 import numpy as np
 import itertools
 import time
 import matplotlib.pyplot as plt
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+import graphlearning as gl
 
 # Load the mnist dataset
 labels = gl.datasets.load('mnist', labels_only=True)
 
 # Define the parameter grid
-k_values = [10, 20, 50, 100]
-similarities = ['euclidean', 'angular', 'manhattan', 'hamming', 'dot']
-kernels = ['uniform', 'gaussian', 'singular', 'distance']
+k_values = [10, 100, 70000]
+similarities = ['euclidean', 'angular']
+kernels = ['gaussian', 'distance']
 num_clusters_values = [8, 10, 12]
-extra_dims = [0, 1, 2, 3, 4]
-methods = ['NgJordanWeiss', 'combinatorial', 'ShiMalik', 'NgJordanWeiss-accelerated']
+extra_dims = [0, 1, 4]
+methods = ['NgJordanWeiss', 'ShiMalik', 'NgJordanWeiss-accelerated']
 
 # Create combinations of parameters
 param_combinations = list(itertools.product(k_values, similarities, kernels, num_clusters_values, extra_dims, methods))
