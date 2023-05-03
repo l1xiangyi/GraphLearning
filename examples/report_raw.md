@@ -26,6 +26,11 @@ where 𝐴 stands for the complement of cluster 𝐴𝑖
 
 Then the optimization problem constructed by normalized cut is
 
-e minimum of ∑𝑘 􏰅 1 􏰆 is achieved if all vol(𝐴𝑖) coincide. However, solving this problem is NP 𝑖=1 vol(𝐴)
-hard. us we use spectral clustering to solve the relaxed version of the problem.
-e objective function can be rewrien using graph Laplacian. Define the cluster inidcator vector h𝑗 = 􏰇h1,𝑗,...,h𝑛,𝑗􏰈𝑇 as
+The minimum of ∑𝑘 􏰅 1 􏰆 is achieved if all vol(𝐴𝑖) coincide. However, solving this problem is NP 𝑖=1 vol(𝐴) hard. Thus we use spectral clustering to solve the relaxed version of the problem. The objective function can be rewritten using graph Laplacian. Define the cluster inidcator vector h𝑗 = h1,𝑗,...,h𝑛,𝑗 as
+
+
+# The Spectral Clustering Algorithm
+Now that we have relaxed the NP-hard graph min-cut problem with the graph Laplacian, we will con- tinue to formuate the algorithm that takes the 𝑛 × 𝑚 dataset where 𝑚 is the feature number. Note that according to [6], the approximation does not gurantee to produce the optimal cut.
+
+## Classic Spectral Clustering Algorithm
+
